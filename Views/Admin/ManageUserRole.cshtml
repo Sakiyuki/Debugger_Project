@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "ManageUserRole";
+}
+
+<h2>ManageUserRole</h2>
+
+<h2>This is Where I will be ridirected when I want ot Manage an Individual user.</h2>
+
+<div class="form-group">
+    @Html.Label("Assign Role", null, htmlAttributes: new { @class= "control-label col-md-2"})
+    <div class="col-md-10">
+        @Html.DropDownList("Roles", null, htmlAttributes: new { @class="from-control"})
+    </div>
+</div>
+
+@Html.ActionLink("Back To User Index", "UserIndex", "Admin")
+
