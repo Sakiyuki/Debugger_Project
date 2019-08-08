@@ -27,8 +27,8 @@ namespace Debugger_Project.ViewModels
         public string DisplayName { get; set; }
 
 
-        //[Display(Name = "Avatar path")]
-        //public string AvatarUrl { get; set; }
+        [Display(Name = "Avatar path")]
+        public string AvatarUrl { get; set; }
 
 
         [Required]
