@@ -14,20 +14,27 @@ namespace Debugger_Project.Models
 
         public int ProjectId { get; set; }
 
+        [Display(Name ="Type")]
         public int TicketTypeId { get; set; }
 
+        [Display(Name = "Status")]
         public int TicketStatusId { get; set; }
 
+        [Display(Name ="Priority")]
         public int TicketPriorityId { get; set; }
 
+        [Display(Name ="Submitter")]
         public string OwnerUserId { get; set; }
 
+        [Display(Name ="Developer")]
         public string AssignedToUserId { get; set; }
 
-
+        [StringLength(50, ErrorMessage ="Title must be between {2} and {1} characters long.",MinimumLength = 6 )]
         public string Title { get; set; }
 
+        [StringLength(100, ErrorMessage = "Title must be between {2} and {1} characters long.", MinimumLength = 6)]
         public string Description { get; set; }
+
 
         public DateTime Created { get; set; }
         

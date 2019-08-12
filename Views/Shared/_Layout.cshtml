@@ -5,92 +5,269 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <title>Color Admin | Login Page</title>
+    <title>Color Admin | Blank Page</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
 
     <!-- ================== BEGIN BASE CSS STYLE ================== -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <link href="~/CustomLogIn/Content/jquery-ui.min.css" rel="stylesheet" />
-    <link href="~/CustomLogIn/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/CustomLogIn/Content/all.min.css" rel="stylesheet" />
-    <link href="~/CustomLogIn/Content/animate.min.css" rel="stylesheet" />
-    <link href="~/CustomLogIn/Content/style-responsive.min.css" rel="stylesheet" />
-    <link href="~/CustomLogIn/Content/default.css" rel="stylesheet" />   
-
+    <link href="~/SharedResources/Content/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/SharedResources/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/SharedResources/Content/all.min.css" rel="stylesheet" />
+    <link href="~/SharedResources/Content/animate.min.css" rel="stylesheet" />
+    <link href="~/SharedResources/Content/style.min.css" rel="stylesheet" />
+    <link href="~/SharedResources/Content/style-responsive.min.css" rel="stylesheet" />
+    <link href="~/SharedResources/Content/default.css" rel="stylesheet" id="theme" />
     <!-- ================== END BASE CSS STYLE ================== -->
     <!-- ================== BEGIN BASE JS ================== -->
-
-    <script src="~/CustomLogIn/Scripts/pace.min.js"></script>
+    <script src="~/Scripts/pace.min.js"></script>
     <!-- ================== END BASE JS ================== -->
-
 </head>
-
-<body class="pace-top">
+<body>
     <!-- begin #page-loader -->
     <div id="page-loader" class="fade show"><span class="spinner"></span></div>
     <!-- end #page-loader -->
-    <!-- begin login-cover -->
-    <div class="login-cover">
-        <div class="login-cover-image" style="background-image: url(/Images/login-bg-17.jpg)" data-id="login-cover-image"></div>
-        <div class="login-cover-bg"></div>
-    </div>
-    <!-- end login-cover -->
     <!-- begin #page-container -->
-    <div id="page-container" class="fade">
-        <!-- begin login -->
-        <div class="login login-v2" data-pageload-addclass="animated fadeIn">
-            <!-- begin brand -->
-            <div class="login-header">
-                <div class="brand">
-                    <span class="logo"></span> <b>Color</b> Admin
-                    <small>responsive bootstrap 4 admin template</small>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-lock"></i>
-                </div>
+    <div id="page-container" class="page-container fade page-sidebar-fixed page-header-fixed">
+        <!-- begin #header -->
+        <div id="header" class="header navbar-default">
+            <!-- begin navbar-header -->
+            <div class="navbar-header">
+                <a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Color</b> Admin</a>
+                <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-            <!-- end brand -->
-            <!-- begin login-content -->
-            <div class="login-content">
-               @RenderBody()
-
-
-
-            </div>
-            <!-- end login-content -->
+            <!-- end navbar-header -->
+            <!-- begin header-nav -->
+            <ul class="navbar-nav navbar-right">
+                <li>
+                    <form class="navbar-form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Enter keyword" />
+                            <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle f-s-14">
+                        <i class="fa fa-bell"></i>
+                        <span class="label">5</span>
+                    </a>
+                    <ul class="dropdown-menu media-list dropdown-menu-right">
+                        <li class="dropdown-header">NOTIFICATIONS (5)</li>
+                        <li class="media">
+                            <a href="javascript:;">
+                                <div class="media-left">
+                                    <i class="fa fa-bug media-object bg-silver-darker"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading">Server Error Reports <i class="fa fa-exclamation-circle text-danger"></i></h6>
+                                    <div class="text-muted f-s-11">3 minutes ago</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="media">
+                            <a href="javascript:;">
+                                <div class="media-left">
+                                    <img src="~/Images/user-1.jpg" class="media-object" alt="" />
+                                    <i class="fab fa-facebook-messenger text-primary media-object-icon"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading">John Smith</h6>
+                                    <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
+                                    <div class="text-muted f-s-11">25 minutes ago</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="media">
+                            <a href="javascript:;">
+                                <div class="media-left">
+                                    <img src="~/Images/user-2.jpg" class="media-object" alt="" />
+                                    <i class="fab fa-facebook-messenger text-primary media-object-icon"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading">Olivia</h6>
+                                    <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
+                                    <div class="text-muted f-s-11">35 minutes ago</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="media">
+                            <a href="javascript:;">
+                                <div class="media-left">
+                                    <i class="fa fa-plus media-object bg-silver-darker"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading"> New User Registered</h6>
+                                    <div class="text-muted f-s-11">1 hour ago</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="media">
+                            <a href="javascript:;">
+                                <div class="media-left">
+                                    <i class="fa fa-envelope media-object bg-silver-darker"></i>
+                                    <i class="fab fa-google text-warning media-object-icon f-s-14"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading"> New Email From John</h6>
+                                    <div class="text-muted f-s-11">2 hour ago</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="dropdown-footer text-center">
+                            <a href="javascript:;">View more</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown navbar-user">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="~/Images/user-13.jpg" alt="" />
+                        <span class="d-none d-md-inline">Adam Schwartz</span> <b class="caret"></b>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="javascript:;" class="dropdown-item">Edit Profile</a>
+                        <a href="javascript:;" class="dropdown-item"><span class="badge badge-danger pull-right">2</span> Inbox</a>
+                        <a href="javascript:;" class="dropdown-item">Calendar</a>
+                        <a href="javascript:;" class="dropdown-item">Setting</a>
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("Log out", "CustomLogoff", "Account", null, new { @class = "dropdown-item"})                       
+                    </div>
+                </li>
+            </ul>
+            <!-- end header navigation right -->
         </div>
-        <!-- end login -->
-        <!-- begin login-bg -->
-        @*<ul class="login-bg-list clearfix">
-                <li class="active"><a href="javascript:;" data-click="change-bg" data-img="../assets/img/login-bg/login-bg-17.jpg" style="background-image: url(../assets/img/login-bg/login-bg-17.jpg)"></a></li>
-                <li><a href="javascript:;" data-click="change-bg" data-img="../assets/img/login-bg/login-bg-16.jpg" style="background-image: url(../assets/img/login-bg/login-bg-16.jpg)"></a></li>
-                <li><a href="javascript:;" data-click="change-bg" data-img="../assets/img/login-bg/login-bg-15.jpg" style="background-image: url(../assets/img/login-bg/login-bg-15.jpg)"></a></li>
-                <li><a href="javascript:;" data-click="change-bg" data-img="../assets/img/login-bg/login-bg-14.jpg" style="background-image: url(../assets/img/login-bg/login-bg-14.jpg)"></a></li>
-                <li><a href="javascript:;" data-click="change-bg" data-img="../assets/img/login-bg/login-bg-13.jpg" style="background-image: url(../assets/img/login-bg/login-bg-13.jpg)"></a></li>
-                <li><a href="javascript:;" data-click="change-bg" data-img="../assets/img/login-bg/login-bg-12.jpg" style="background-image: url(../assets/img/login-bg/login-bg-12.jpg)"></a></li>
-            </ul>*@
-        <!-- end login-bg -->
+        <!-- end #header -->
+        <!-- begin #sidebar -->
+        <div id="sidebar" class="sidebar">
+            <!-- begin sidebar scrollbar -->
+            <div data-scrollbar="true" data-height="100%">
+                <!-- begin sidebar user -->
+                <ul class="nav">
+                    <li class="nav-profile">
+                        <a href="javascript:;" data-toggle="nav-profile">
+                            <div class="cover with-shadow"></div>
+                            <div class="image">
+                                <img src="~/Images/user-13.jpg" alt="" />
+                            </div>
+                            <div class="info">
+                                <b class="caret pull-right"></b>
+                                Sean Ngu
+                                <small>Front end developer</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <ul class="nav nav-profile">
+                            <li><a href="javascript:;"><i class="fa fa-cog"></i> Settings</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-pencil-alt"></i> Send Feedback</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-question-circle"></i> Helps</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- end sidebar user -->
+                <!-- begin sidebar nav -->
+                <ul class="nav">
+                    <li class="nav-header">Navigation</li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret"></b>
+                            <i class="fa fa-th-large"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="index.html">Dashboard v1</a></li>
+                            <li><a href="index_v2.html">Dashboard v2</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <span class="badge pull-right">10</span>
+                            <i class="fa fa-hdd"></i>
+                            <span>Email</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="email_inbox.html">Inbox</a></li>
+                            <li><a href="email_compose.html">Compose</a></li>
+                            <li><a href="email_detail.html">Detail</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="widget.html">
+                            <i class="fab fa-simplybuilt"></i>
+                            <span>Widgets <span class="label label-theme m-l-5">NEW</span></span>
+                        </a>
+                    </li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret"></b>
+                            <i class="fa fa-gem"></i>
+                            <span>UI Elements <span class="label label-theme m-l-5">NEW</span></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="ui_general.html">General <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
+                            <li><a href="ui_typography.html">Typography</a></li>
+                            <li><a href="ui_tabs_accordions.html">Tabs & Accordions</a></li>
+                            <li><a href="ui_unlimited_tabs.html">Unlimited Nav Tabs</a></li>
+                            <li><a href="ui_modal_notification.html">Modal & Notification <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
+                            <li><a href="ui_widget_boxes.html">Widget Boxes</a></li>
+                            <li><a href="ui_media_object.html">Media Object</a></li>
+                            <li><a href="ui_buttons.html">Buttons  <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
+                            <li><a href="ui_icons.html">Icons</a></li>
+                            <li><a href="ui_simple_line_icons.html">Simple Line Icons</a></li>
+                            <li><a href="ui_ionicons.html">Ionicons</a></li>
+                            <li><a href="ui_tree.html">Tree View</a></li>
+                            <li><a href="ui_language_bar_icon.html">Language Bar & Icon</a></li>
+                            <li><a href="ui_social_buttons.html">Social Buttons</a></li>
+                            <li><a href="ui_tour.html">Intro JS</a></li>
+                        </ul>
+                    </li>
+                    
+                        </ul>
+                    </li>
+                    <!-- begin sidebar minify button -->
+                    <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+                    <!-- end sidebar minify button -->
+                </ul>
+                <!-- end sidebar nav -->
+            </div>
+            <!-- end sidebar scrollbar -->
+        </div>
+        <div class="sidebar-bg"></div>
+        <!-- end #sidebar -->
+
+
+        <!-- begin #content -->
+        <div id="content" class="content">
+          @RenderBody()
+        </div>
+        <!-- end #content -->
+
+
+
         <!-- begin theme-panel -->
         <div class="theme-panel theme-panel-lg">
             <a href="javascript:;" data-click="theme-panel-expand" class="theme-collapse-btn"><i class="fa fa-cog"></i></a>
             <div class="theme-panel-content">
                 <h5 class="m-t-0">Color Theme</h5>
-                @*<ul class="theme-list clearfix">
-                        <li><a href="javascript:;" class="bg-red" data-theme="red" data-theme-file="../assets/css/default/theme/red.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Red">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-pink" data-theme="pink" data-theme-file="../assets/css/default/theme/pink.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Pink">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-orange" data-theme="orange" data-theme-file="../assets/css/default/theme/orange.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Orange">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-yellow" data-theme="yellow" data-theme-file="../assets/css/default/theme/yellow.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Yellow">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-lime" data-theme="lime" data-theme-file="../assets/css/default/theme/lime.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Lime">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-green" data-theme="green" data-theme-file="../assets/css/default/theme/green.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Green">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-teal" data-theme="default" data-theme-file="../assets/css/default/theme/default.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Default">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-aqua" data-theme="aqua" data-theme-file="../assets/css/default/theme/aqua.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Aqua">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-blue" data-theme="blue" data-theme-file="../assets/css/default/theme/blue.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Blue">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-purple" data-theme="purple" data-theme-file="../assets/css/default/theme/purple.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Purple">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-indigo" data-theme="indigo" data-theme-file="../assets/css/default/theme/indigo.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Indigo">&nbsp;</a></li>
-                        <li><a href="javascript:;" class="bg-black" data-theme="black" data-theme-file="../assets/css/default/theme/black.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Black">&nbsp;</a></li>
-                    </ul>*@
+                <ul class="theme-list clearfix">
+                    <li><a href="javascript:;" class="bg-red" data-theme="red" data-theme-file="../assets/css/default/theme/red.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Red">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-pink" data-theme="pink" data-theme-file="../assets/css/default/theme/pink.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Pink">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-orange" data-theme="orange" data-theme-file="../assets/css/default/theme/orange.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Orange">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-yellow" data-theme="yellow" data-theme-file="../assets/css/default/theme/yellow.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Yellow">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-lime" data-theme="lime" data-theme-file="../assets/css/default/theme/lime.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Lime">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-green" data-theme="green" data-theme-file="../assets/css/default/theme/green.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Green">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-teal" data-theme="default" data-theme-file="../assets/css/default/theme/default.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Default">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-aqua" data-theme="aqua" data-theme-file="../assets/css/default/theme/aqua.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Aqua">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-blue" data-theme="blue" data-theme-file="../assets/css/default/theme/blue.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Blue">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-purple" data-theme="purple" data-theme-file="../assets/css/default/theme/purple.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Purple">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-indigo" data-theme="indigo" data-theme-file="../assets/css/default/theme/indigo.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Indigo">&nbsp;</a></li>
+                    <li><a href="javascript:;" class="bg-black" data-theme="black" data-theme-file="../assets/css/default/theme/black.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Black">&nbsp;</a></li>
+                </ul>
                 <div class="divider"></div>
                 <div class="row m-t-10">
                     <div class="col-md-6 control-label text-inverse f-w-600">Header Styling</div>
@@ -157,27 +334,27 @@
                 </div>
                 <div class="divider"></div>
                 <h5>THEME VERSION</h5>
-                @*<div class="theme-version">
-                        <a href="../template_html/index_v2.html" class="active">
-                            <span style="background-image: url(../assets/img/theme/default.jpg);"></span>
-                        </a>
-                        <a href="../template_transparent/index_v2.html">
-                            <span style="background-image: url(../assets/img/theme/transparent.jpg);"></span>
-                        </a>
-                    </div>
-                    <div class="theme-version">
-                        <a href="../template_apple/index_v2.html">
-                            <span style="background-image: url(../assets/img/theme/apple.jpg);"></span>
-                        </a>
-                        <a href="../template_material/index_v2.html">
-                            <span style="background-image: url(../assets/img/theme/material.jpg);"></span>
-                        </a>
-                    </div>
-                    <div class="theme-version">
-                        <a href="../template_facebook/index_v2.html">
-                            <span style="background-image: url(../assets/img/theme/facebook.jpg);"></span>
-                        </a>
-                    </div>*@
+                <div class="theme-version">
+                    <a href="../template_html/index_v2.html" class="active">
+                        <span style="background-image: url(../assets/img/theme/default.jpg);"></span>
+                    </a>
+                    <a href="../template_transparent/index_v2.html">
+                        <span style="background-image: url(../assets/img/theme/transparent.jpg);"></span>
+                    </a>
+                </div>
+                <div class="theme-version">
+                    <a href="../template_apple/index_v2.html">
+                        <span style="background-image: url(../assets/img/theme/apple.jpg);"></span>
+                    </a>
+                    <a href="../template_material/index_v2.html">
+                        <span style="background-image: url(../assets/img/theme/material.jpg);"></span>
+                    </a>
+                </div>
+                <div class="theme-version">
+                    <a href="../template_facebook/index_v2.html">
+                        <span style="background-image: url(../assets/img/theme/facebook.jpg);"></span>
+                    </a>
+                </div>
                 <div class="divider"></div>
                 <div class="row m-t-10">
                     <div class="col-md-12">
@@ -187,43 +364,32 @@
             </div>
         </div>
         <!-- end theme-panel -->
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
     </div>
+
+
     <!-- end page container -->
     <!-- ================== BEGIN BASE JS ================== -->
-
-
-
-    <script src="~/CustomLogIn/Scripts/jquery-3.3.1.min.js"></script>
-    <script src="~/CustomLogIn/Scripts/jquery-ui.min.js"></script>
-    <script src="~/CustomLogIn/Scripts/bootstrap.bundle.min.js"></script>
-
-
+    <script src="~/SharedResources/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/SharedResources/Scripts/jquery-ui.min.js"></script>
+    <script src="~/SharedResources/Scripts/bootstrap.bundle.min.js"></script>
     <!--[if lt IE 9]>
-        <script src="~/Scripts/html5shiv.js"></script>
-        <script src="~/Scripts/respond.min.js"></script>
-        <script src="~/Scripts/excanvas.min.js"></script>
+        <script src="../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../assets/crossbrowserjs/excanvas.min.js"></script>
     <![endif]-->
-
-    <script src="~/CustomLogIn/Scripts/jquery.slimscroll.min.js"></script>
-    <script src="~/CustomLogIn/Scripts/js.cookie.js"></script>
-    <script src="~/CustomLogIn/Scripts/default.min.js"></script>
-    <script src="~/CustomLogIn/Scripts/apps.min.js"></script>
-
-
+    <script src="~/SharedResources/Scripts/jquery.slimscroll.min.js"></script>
+    <script src="~/SharedResources/Scripts/js.cookie.js"></script>
+    <script src="~/SharedResources/Scripts/default.min.js"></script>
+    <script src="~/SharedResources/Scripts/apps.min.js"></script>
     <!-- ================== END BASE JS ================== -->
-    <!-- ================== BEGIN PAGE LEVEL JS =================
-        = -->
 
-    <script src="~/CustomLogIn/Scripts/login-v2.demo.min.js"></script>
-    @RenderSection("scripts", required: false);
+    <script>$(document).ready(function() {
+			App.init();
+		});</script>
 
-
-
-    <!-- ================== END PAGE LEVEL JS ================== -->
-    <script>
-        $(document).ready(function () {
-            App.init();
-            LoginV2.init();
-        });</script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

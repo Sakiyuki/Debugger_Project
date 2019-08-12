@@ -186,7 +186,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DecisionHelper.cs" />
     <Compile Include="Helpers\DeveloperRolesHelper.cs" />
+    <Compile Include="Helpers\ImageHelpers.cs" />
     <Compile Include="Helpers\ImageUploadValidator.cs" />
     <Compile Include="Helpers\ProjectHelper.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />
@@ -360,6 +362,57 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\scrollMonitor.js" />
+    <Content Include="SharedResources\Content\all.css" />
+    <Content Include="SharedResources\Content\all.min.css" />
+    <Content Include="SharedResources\Content\animate.css" />
+    <Content Include="SharedResources\Content\animate.min.css" />
+    <Content Include="SharedResources\Content\aqua.css" />
+    <Content Include="SharedResources\Content\black.css" />
+    <Content Include="SharedResources\Content\blue.css" />
+    <Content Include="SharedResources\Content\bootstrap.css" />
+    <Content Include="SharedResources\Content\bootstrap.min.css" />
+    <Content Include="SharedResources\Content\brands.css" />
+    <Content Include="SharedResources\Content\brands.min.css" />
+    <Content Include="SharedResources\Content\default.css" />
+    <Content Include="SharedResources\Content\fontawesome.css" />
+    <Content Include="SharedResources\Content\fontawesome.min.css" />
+    <Content Include="SharedResources\Content\green.css" />
+    <Content Include="SharedResources\Content\indigo.css" />
+    <Content Include="SharedResources\Content\jquery-ui.css" />
+    <Content Include="SharedResources\Content\jquery-ui.min.css" />
+    <Content Include="SharedResources\Content\lime.css" />
+    <Content Include="SharedResources\Content\orange.css" />
+    <Content Include="SharedResources\Content\pink.css" />
+    <Content Include="SharedResources\Content\purple.css" />
+    <Content Include="SharedResources\Content\red.css" />
+    <Content Include="SharedResources\Content\regular.css" />
+    <Content Include="SharedResources\Content\regular.min.css" />
+    <Content Include="SharedResources\Content\solid.css" />
+    <Content Include="SharedResources\Content\solid.min.css" />
+    <Content Include="SharedResources\Content\style-responsive.css" />
+    <Content Include="SharedResources\Content\style-responsive.min.css" />
+    <Content Include="SharedResources\Content\style.css" />
+    <Content Include="SharedResources\Content\style.min.css" />
+    <Content Include="SharedResources\Content\svg-with-js.css" />
+    <Content Include="SharedResources\Content\svg-with-js.min.css" />
+    <Content Include="SharedResources\Content\v4-shims.css" />
+    <Content Include="SharedResources\Content\v4-shims.min.css" />
+    <Content Include="SharedResources\Content\yellow.css" />
+    <Content Include="SharedResources\Scripts\apps.js" />
+    <Content Include="SharedResources\Scripts\apps.min.js" />
+    <Content Include="SharedResources\Scripts\bootstrap.bundle.js" />
+    <Content Include="SharedResources\Scripts\bootstrap.bundle.min.js" />
+    <Content Include="SharedResources\Scripts\default.js" />
+    <Content Include="SharedResources\Scripts\default.min.js" />
+    <Content Include="SharedResources\Scripts\jquery-3.3.1.min.js" />
+    <Content Include="SharedResources\Scripts\jquery-ui.js" />
+    <Content Include="SharedResources\Scripts\jquery-ui.min.js" />
+    <Content Include="SharedResources\Scripts\jquery.slimscroll.js" />
+    <Content Include="SharedResources\Scripts\jquery.slimscroll.min.js" />
+    <Content Include="SharedResources\Scripts\js.cookie.js" />
+    <Content Include="SharedResources\webfonts\fa-brands-400.svg" />
+    <Content Include="SharedResources\webfonts\fa-regular-400.svg" />
+    <Content Include="SharedResources\webfonts\fa-solid-900.svg" />
     <Content Include="Views\Admin\UserIndex.cshtml" />
     <Content Include="Views\Admin\ManageProjects.cshtml" />
     <Content Include="Views\Admin\ManageRoles.cshtml" />
@@ -391,6 +444,20 @@
     <Content Include="CustomLogIn\WebFonts\fa-solid-900.ttf" />
     <Content Include="CustomLogIn\WebFonts\fa-solid-900.woff" />
     <Content Include="CustomLogIn\WebFonts\fa-solid-900.woff2" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="SharedResources\webfonts\fa-brands-400.eot" />
+    <Content Include="SharedResources\webfonts\fa-brands-400.ttf" />
+    <Content Include="SharedResources\webfonts\fa-brands-400.woff" />
+    <Content Include="SharedResources\webfonts\fa-brands-400.woff2" />
+    <Content Include="SharedResources\webfonts\fa-regular-400.eot" />
+    <Content Include="SharedResources\webfonts\fa-regular-400.ttf" />
+    <Content Include="SharedResources\webfonts\fa-regular-400.woff" />
+    <Content Include="SharedResources\webfonts\fa-regular-400.woff2" />
+    <Content Include="SharedResources\webfonts\fa-solid-900.eot" />
+    <Content Include="SharedResources\webfonts\fa-solid-900.ttf" />
+    <Content Include="SharedResources\webfonts\fa-solid-900.woff" />
+    <Content Include="SharedResources\webfonts\fa-solid-900.woff2" />
+    <Content Include="private.config" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -496,6 +563,7 @@
     <Content Include="WebFonts\fa-solid-900.woff2" />
     <Content Include="Views\Member\EditProfile.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Tickets\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,54 @@
+﻿
+@model Debugger_Project.Models.Ticket
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Ticket Dashboard</h2>
+
+
+
+
+
+
+
+<!-- Top row will be for hte entire display-->
+<div class="row">
+    <div class="col-md-12">
+        <!--1.Show the attachment image or Icon
+            2.Show the attachment file name
+            3.Show the Created Date
+            4.Show the Title
+            5.Show the Description
+            6.Show the Author name
+            -->
+        @foreach (var attachment in Model.TicketAttachments)
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @*<img src="??" />*@
+                            <a href="attachment.AttachmentUrl">@Path.GetFileNameWithoutExtension);</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-6">@attachment.Created.ToString("MMM d, yyyy")</div>
+                <div class="col-md-6">@attachment.User.FullName</div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @attachment.Title
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @attachment.Description
+                </div>
+            </div>
+        }
+    </div>
+</div>    
+    

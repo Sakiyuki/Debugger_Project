@@ -153,7 +153,14 @@ namespace Debugger_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    DisplayName = model.DisplayName
+                };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -168,12 +175,14 @@ namespace Debugger_Project.Controllers
                         Body = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>",
                         IsBodyHtml = true
                     };
-                    return RedirectToAction("Index", "Home");
+
+                    var svc = new PersonalEmail();
+                    await svc.SendAsync(email);
+                    return RedirectToAction("Dashboard", "Home");
                 }
                 AddErrors(result);
             }
-
-            // If we got this far, something failed, redisplay form
+                       // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -396,6 +405,7 @@ namespace Debugger_Project.Controllers
             return RedirectToAction("Login", "Home");
         }
 
+
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -462,7 +472,7 @@ namespace Debugger_Project.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
