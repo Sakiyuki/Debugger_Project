@@ -208,6 +208,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\MemberViewModel.cs" />
+    <Compile Include="ViewModels\UserIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\all.css" />
@@ -286,6 +287,7 @@
     <Content Include="Images\facebook.jpg" />
     <Content Include="Images\Lead Developer.jpg" />
     <Content Include="Images\login-bg-17.jpg" />
+    <Content Include="Images\login-bg-7.jpg" />
     <Content Include="Images\logo-bs4.png" />
     <Content Include="Images\material.jpg" />
     <Content Include="Images\Model_acire1.jpg" />
@@ -458,6 +460,7 @@
     <Content Include="SharedResources\webfonts\fa-solid-900.woff" />
     <Content Include="SharedResources\webfonts\fa-solid-900.woff2" />
     <Content Include="private.config" />
+    <None Include="Properties\PublishProfiles\DebuggerProject20190812035035 - Web Deploy.pubxml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -567,6 +570,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Attachments\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

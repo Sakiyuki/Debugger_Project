@@ -50,7 +50,7 @@ namespace Debugger_Project.Controllers
             user.UserName = member.Email;
 
             //Step 2: Determine if the user has changed their Avatar
-            if (ImageUploadValidator.IsWebFriendlyImage(member.Avatar))
+            if (ImageHelpers.IsWebFriendlyImage(member.Avatar))
             {
                 var fileName = Path.GetFileName(member.Avatar.FileName);
                 member.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
@@ -64,12 +64,6 @@ namespace Debugger_Project.Controllers
             return RedirectToAction("Index", "Home");
           
         }
-
-
-
-
-
-
 
     }
 }

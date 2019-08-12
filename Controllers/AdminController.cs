@@ -19,16 +19,24 @@ namespace Debugger_Project.Controllers
         // GET: Admin
         public ActionResult UserIndex()
         {
+            var roles = db.Roles.ToList();
+            var projects = db.Projects;
             var users = db.Users.Select(u => new MemberViewModel //This line goes into the db, search for the Users table,
             //Selects the properties in the database listed below from the UserProfile View Model and converts it to a list.
             {
                 Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                DisplayName = u.DisplayName,
-                //AvatarUrl = u.AvatarUrl,
+                FullName = u.LastName + "," + u.FirstName,
+                //LastName = u.LastName,
+                //DisplayName = u.DisplayName,
+                AvatarUrl = u.AvatarUrl,
                 Email = u.Email
             }).ToList();
+
+            foreach(var user in users)
+            {
+                user.CurrentRole = new SelectList(roles, "Name", "Name", roleHelper.ListUserRoles(user.Id).FirstOrDefault());
+                user.CurrentProjects = new MultiSelectList(projects, "Id", "Name", projectHelper.ListUserProjects(user.Id).Select(p => p.Id));
+            }
 
             return View(users);
         }

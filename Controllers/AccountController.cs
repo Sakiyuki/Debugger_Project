@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using Debugger_Project.Models;
 using System.Web.Configuration;
 using System.Net.Mail;
+using Debugger_Project.Helpers;
+using System.IO;
 
 namespace Debugger_Project.Controllers
 {
@@ -158,8 +160,16 @@ namespace Debugger_Project.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    DisplayName = model.DisplayName
+                    DisplayName = model.DisplayName,
+                    AvatarUrl = WebConfigurationManager.AppSettings["DefaultAvatar"]
                 };
+
+                if (ImageHelpers.IsWebFriendlyImage(model.Avatar))
+                {
+                    var fileName = Path.GetFileName(model.Avatar.FileName);
+                    model.Avatar.SavAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
+                    user.AvatarUrl = "/Avatars/" + fileName;
+                }
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

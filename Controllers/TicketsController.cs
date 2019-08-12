@@ -19,6 +19,19 @@ namespace Debugger_Project.Controllers
         private ProjectsHelper projectHelper = new ProjectsHelper();
 
         [Authorize]
+        public ActionResult Dashboard(int id)
+        {
+            var ticket = db.Tickets.Find(id);
+
+            if(ticket == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(ticket);
+        }
+
+        [Authorize]
         // GET: Tickets
         public ActionResult Index()
         {
