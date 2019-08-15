@@ -25,7 +25,7 @@ namespace Debugger_Project.Controllers
             //Selects the properties in the database listed below from the UserProfile View Model and converts it to a list.
             {
                 Id = u.Id,
-                FullName = u.LastName + "," + u.FirstName,
+                DisplayName = u.LastName + "," + u.FirstName,
                 //LastName = u.LastName,
                 //DisplayName = u.DisplayName,
                 AvatarUrl = u.AvatarUrl,

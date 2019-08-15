@@ -26,6 +26,7 @@ namespace Debugger_Project.Helpers
                         ImageFormat.Png.Equals(img.RawFormat) ||
                         ImageFormat.Icon.Equals(img.RawFormat) ||
                         ImageFormat.Bmp.Equals(img.RawFormat) ||
+                        ImageFormat.Tiff.Equals(img.RawFormat) ||
                         ImageFormat.Gif.Equals(img.RawFormat);
                 }
             }
@@ -65,6 +66,39 @@ namespace Debugger_Project.Helpers
             }
               
         }
-                   
+         
+        public static string GetIconPath(string filePath)
+        {
+            switch (Path.GetExtension(filePath))
+            {
+                case ".png":
+                case ".bmp":
+                case ".tif":
+                case ".ico":
+                case ".jpg":
+                case ".jpeg":
+                    return filePath;
+               
+                case ".pdf":
+                    return "/Images/pdf.png";
+                case ".doc":
+                    return "/Images/doc.png";
+                case ".docx":
+                    return "/Images/docx.png";
+                case ".xls":
+                    return "/Images/xls.png";
+                case ".xlsx":
+                    return "/Images/xlsx.png";
+                case ".zip":
+                    return "/Images/zip.png";
+                default:
+                    return "/Images/other/png";
+
+
+
+
+            }
+        }
+
     }
 }

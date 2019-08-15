@@ -20,13 +20,30 @@ namespace Debugger_Project
 
     public class PersonalEmail
     {
+
         public async Task SendAsync(MailMessage message)
+        {
+            //Plug in your email service here to send an email.
+            await SendMailAsync(message);
+        }
+        public async Task<bool> SendMailAsync(IdentityMessage message)
         {
             var GmailUsername = WebConfigurationManager.AppSettings["username"];
             var GmailPassword = WebConfigurationManager.AppSettings["password"];
             var host = WebConfigurationManager.AppSettings["host"];
             int port = Convert.ToInt32(WebConfigurationManager.AppSettings["port"]);
+            var from = new MailAddress(WebConfigurationManager.AppSettings["emailfrom"],
+                            "BugTracker");
 
+            //Email object set up
+            var email = new MailMessage(from, new MailAddress(message.Destination))
+            {
+                Subject = message.Subject,
+                Body = message.Body,
+                IsBodyHtml = true,
+            };
+
+            //SMTP object set up
             using (var smtp = new SmtpClient()
             {
                 Host = host,
@@ -40,7 +57,8 @@ namespace Debugger_Project
             {
                 try
                 {
-                    await smtp.SendMailAsync(message);
+                    await smtp.SendMailAsync(email);
+                    return true;
                 }
                 catch (Exception e)
                 {
@@ -49,6 +67,8 @@ namespace Debugger_Project
                 }
             };
         }
+    }
+            
     }
     public class EmailService : IIdentityMessageService
     {
@@ -142,4 +162,4 @@ namespace Debugger_Project
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
-}
+

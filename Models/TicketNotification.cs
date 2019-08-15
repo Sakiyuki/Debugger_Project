@@ -15,11 +15,15 @@ namespace Debugger_Project.Models
 
         public string NotificationBody { get; set; }
 
-        public string RecipeintId { get; set; }
-
+        public string RecipientId { get; set; }
+      
         public string SenderId { get; set; }
 
         public bool Read { get; set; }
+
+        public string Subject { get; set; }
+
+        
 
 
 

@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Debugger_Project.Helpers;
@@ -177,10 +178,10 @@ namespace Debugger_Project.Controllers
                 ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
                 return View(ticket);
             }
-            else
-            {
-                return RedirectToAction("AccessViolation", "Admin");
-            }
+            //else
+            //{
+            //    return RedirectToAction("AccessViolation", "Admin");
+            //}
 
         }
 
@@ -194,24 +195,68 @@ namespace Debugger_Project.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Go out to the DB and get a copy of the Ticket before it is changed
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id); //Not tracking is used so the database doesn't think I'm trying to make changes to the ticket.
+
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
+
+                //Now call the NotificationHelper to determine if a Notification needs to be created
+                NotificationHelper.CreateAssignmentNotification(oldTicket, ticket);
+
                 return RedirectToAction("Index");
             }
 
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
-
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
 
             return View(ticket);
+        }
+
+        public ActionResult AssignTicket(int? id)
+        {
+            UserRolesHelper helper = new UserRolesHelper();
+            var ticket = db.Tickets.Find(id);
+            var users = helper.UsersInRole("Developer").ToList();
+            ViewBag.AssignedToUserId = new SelectList(users, "Id", "FullName",
+                                                      ticket.AssignedToUserId);
+            return View(ticket);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AssignTicket(Ticket model)
+        {
+            var ticket = db.Tickets.Find(model.Id);
+            ticket.AssignedToUserId = model.AssignedToUserId;
+
+            db.SaveChanges();
+
+            var callbackUrl = Url.Action("Details", "Tickets", new { id = ticket.Id },
+                                            protocol: Request.Url.Scheme);
+            try
+            {
+                EmailService ems = new EmailService();
+                IdentityMessage msg = new IdentityMessage();
+                ApplicationUser user = new db.Users.Find(model.AssignedToUserId);
+
+                msg.Body = "You have been assigned a new Ticket." + Environment.NewLine +
+                           "Please click the following ling to view the details " +
+                           "<a href=\"" + callbackUrl + "\">NEW TICKET</a>";
+
+                msg.Destination = user.Email;
+                msg.Subject = "Invite to Household";
+
+                await ems.SendMailAsync(msg);
+            }
+            catch (Exception ex)
+            {
+                await Task.FromResult(0);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Tickets/Delete/5

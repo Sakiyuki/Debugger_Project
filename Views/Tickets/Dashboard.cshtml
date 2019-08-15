@@ -148,8 +148,8 @@
                             <div class="col-md-4">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <img src="@attachment.AttachmentUrl"/>
-                                        <a target="_blank" href="@attachment.AttachmentUrl">@Path.GetFileNameWithoutExtension(attachment.AttachmentUrl)</a>
+                                        <img src="@ImageHelpers.GetIconPath(attachment.AttachmentUrl)"/>
+                                        @*<a target="_blank" href="@attachment.AttachmentUrl">@Path.GetFileNameWithoutExtension(attachment.AttachmentUrl)</a>*@
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-6">@attachment.Created.ToString("MMM d, yyyy")</div>
-                                <div class="col-md-6">@attachment.User.FullName</div>
+                                <div class="col-md-6">@attachment.User.DisplayName</div>
                             </div>
                         </div>
                         <div class="row">

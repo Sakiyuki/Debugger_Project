@@ -186,14 +186,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CommonHelper.cs" />
     <Compile Include="Helpers\DecisionHelper.cs" />
     <Compile Include="Helpers\DeveloperRolesHelper.cs" />
     <Compile Include="Helpers\ImageHelpers.cs" />
     <Compile Include="Helpers\ImageUploadValidator.cs" />
+    <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\ProjectHelper.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EmailNotification.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Project.cs" />
@@ -297,8 +300,11 @@
     <Content Include="Images\Model_omni6.jpg" />
     <Content Include="Images\Model_pinup7.jpg" />
     <Content Include="Images\Model_Tiffany2.jpg" />
+    <Content Include="Images\other.png" />
+    <Content Include="Images\pdf.png" />
     <Content Include="Images\Project-Manager.jpg" />
     <Content Include="Images\transparent.jpg" />
+    <Content Include="Images\txt.png" />
     <Content Include="Images\user-1 %282%29.jpg" />
     <Content Include="Images\user-1.jpg" />
     <Content Include="Images\user-10.jpg" />
@@ -322,6 +328,9 @@
     <Content Include="Images\work-img-6.jpg" />
     <Content Include="Images\work-img-7.jpg" />
     <Content Include="Images\work-img-8.jpg" />
+    <Content Include="Images\xls.png" />
+    <Content Include="Images\xlsx.png" />
+    <Content Include="Images\zip.png" />
     <Content Include="Scripts\apps.js" />
     <Content Include="Scripts\apps.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -459,7 +468,9 @@
     <Content Include="SharedResources\webfonts\fa-solid-900.ttf" />
     <Content Include="SharedResources\webfonts\fa-solid-900.woff" />
     <Content Include="SharedResources\webfonts\fa-solid-900.woff2" />
-    <Content Include="private.config" />
+    <Content Include="private.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\DebuggerProject20190812035035 - Web Deploy.pubxml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="Web.config">
@@ -567,6 +578,7 @@
     <Content Include="Views\Member\EditProfile.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Tickets\Dashboard.cshtml" />
+    <Content Include="Views\Tickets\AssignTicket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
