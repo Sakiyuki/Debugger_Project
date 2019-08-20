@@ -55,7 +55,7 @@ namespace Debugger_Project.Controllers
                 ticketAttachment.UserId = User.Identity.GetUserId();
 
                 //This is where I will use my AttachmentUploadValidator to decide whether this is a good file or not
-                if (ImageHelpers.IsValidAttachment(attachment))
+                if (ImageHelper.IsValidAttachment(attachment))
                 {
                         var fileName = Path.GetFileName(attachment.FileName);
                         attachment.SaveAs(Path.Combine(Server.MapPath("~/Attachments/"), fileName));

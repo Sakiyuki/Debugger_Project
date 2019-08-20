@@ -4,8 +4,10 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using Debugger_Project.Helpers;
 using Debugger_Project.Models;
@@ -89,17 +91,13 @@ namespace Debugger_Project.Controllers
 
         public ActionResult Create()
         {
-
-            var myProjects = projectHelper.ListUserProjects(User.Identity.GetUserId());
             var userId = User.Identity.GetUserId();
+            var myProjects = projectHelper.ListUserProjects(userId);//This is how we get the userId    
             
             ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             return View();
-            //ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name");
-            //ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName");
-            //ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName");
         }
 
         // POST: Tickets/Create
@@ -118,47 +116,41 @@ namespace Debugger_Project.Controllers
                 ticket.OwnerUserId = User.Identity.GetUserId();
                 ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "New/UnAssigned").Id;
 
-                ticket.Created = DateTime.Now;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            //ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            //ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
-
             return View(ticket);
         }
 
         // GET: Tickets/Edit/5
         [Authorize(Roles ="Admin, ProjectManager, Submitter, Developer")]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id)// If the int Id is not null do we do anything otherwise return httpStatusCode
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
            
-
-            Ticket ticket = db.Tickets.Find(id);
+            Ticket ticket = db.Tickets.Find(id);//Here we try to find the ticket Id.
             if (ticket == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();//If Ticket Id is not found, we return 404
             }
 
-            var allowed = false;
-            var userId = User.Identity.GetUserId();
+            var allowed = false;//This line of code determines whether or not the user is allowed to enter.
+            var userId = User.Identity.GetUserId();//Here we determine what the users UserId is?
             
-            //Based on my Role.. Can I edit this Ticket
-            if (User.IsInRole("Developer") && ticket.AssignedToUserId == userId)
+            //Based on my Role.. Can user edit this Ticket
+            if (User.IsInRole("Developer") && ticket.AssignedToUserId == userId)//Here we check if you are a developer and you have been assigned to a ticket if so you can edit it.
                 allowed = true;
-            else if (User.IsInRole("Submitter") && ticket.OwnerUserId == userId)
+            else if (User.IsInRole("Submitter") && ticket.OwnerUserId == userId)//Here we check if you are a Submitter and the ticket that you are submitting belongs to you if so, you can edit it
                 allowed = true;
-            else if (User.IsInRole("ProjectManager"))
+            else if (User.IsInRole("ProjectManager"))// If you are a project manager you are allowed to edit
             {
                 //if(db.Users.Find(userId).Projects.SelectMany(p => p.Tickets).Select(t => { new {id = t.Id}.Contains(ticket.Id))
                 //If this ticket is on a Project that I am on then I can edit this Ticket...
@@ -168,20 +160,20 @@ namespace Debugger_Project.Controllers
                 allowed = true; //The only person left is Admin and if all other conditions fail, then this one is true.
             }
 
-            if (allowed)
+            if (TicketDecisionHelper.TicketIsEditableByUser(ticket))//If the value of allowed is true then the below code can be executed.
             { 
                 ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-                //ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
                 ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
                 ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
                 ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
                 ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
                 return View(ticket);
             }
-            //else
-            //{
-            //    return RedirectToAction("AccessViolation", "Admin");
-            //}
+            else  //Otherwise user gets returned here.
+            {
+                TempData["ErrorMessage"] = "Based on your role you are not allowed to edit this Ticket...";
+                return RedirectToAction("AccessViolation", "Admin");//This returns you to the AccessViolation action in the Admin controller.
+            }
 
         }
 
@@ -239,18 +231,22 @@ namespace Debugger_Project.Controllers
                                             protocol: Request.Url.Scheme);
             try
             {
-                EmailService ems = new EmailService();
-                IdentityMessage msg = new IdentityMessage();
-                ApplicationUser user = new db.Users.Find(model.AssignedToUserId);
+                var recipientEmail = db.Users.Find(model.AssignedToUserId).Email;
 
-                msg.Body = "You have been assigned a new Ticket." + Environment.NewLine +
+                var senderId = User.Identity.GetUserId();
+                var senderName = db.Users.Find(senderId).FirstName;
+                var fromEmail = WebConfigurationManager.AppSettings["emailfrom"];
+                var email = new MailMessage($"{senderName}<{fromEmail}>", recipientEmail)
+                {
+                    Subject = "You have been assigned to Ticket Id: " + ticket.Id,
+                    Body = "You have been assigned a new Ticket." + Environment.NewLine +
                            "Please click the following ling to view the details " +
-                           "<a href=\"" + callbackUrl + "\">NEW TICKET</a>";
+                           "<a href=\"" + callbackUrl + "\">NEW TICKET</a>",
+                    IsBodyHtml = true
+                };
 
-                msg.Destination = user.Email;
-                msg.Subject = "Invite to Household";
-
-                await ems.SendMailAsync(msg);
+                var svc = new PersonalEmail();
+                await svc.SendEmailAsync(email);
             }
             catch (Exception ex)
             {

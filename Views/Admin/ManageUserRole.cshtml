@@ -7,12 +7,23 @@
 
 <h2>This is Where I will be ridirected when I want ot Manage an Individual user.</h2>
 
-<div class="form-group">
-    @Html.Label("Assign Role", null, htmlAttributes: new { @class= "control-label col-md-2"})
-    <div class="col-md-10">
-        @Html.DropDownList("Roles", null, htmlAttributes: new { @class="from-control"})
-    </div>
-</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("UserId", (string)ViewBag.UserId)
 
+    <div class="form-group">
+        @Html.Label("Assign Role", null, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("Roles", null, "--Select Role--", htmlAttributes: new { @class = "from-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+        </div>
+    </div>
+
+}
 @Html.ActionLink("Back To User Index", "UserIndex", "Admin")
 

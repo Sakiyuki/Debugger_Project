@@ -75,8 +75,7 @@ namespace Debugger_Project.Helpers
             {
                 return db.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToList();
             }
-
-        
+    
     }
 }
 

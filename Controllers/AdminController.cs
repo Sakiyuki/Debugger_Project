@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Debugger_Project.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, ProjectManager")]
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -34,13 +34,13 @@ namespace Debugger_Project.Controllers
 
             foreach(var user in users)
             {
-                user.CurrentRole = new SelectList(roles, "Name", "Name", roleHelper.ListUserRoles(user.Id).FirstOrDefault());
-                user.CurrentProjects = new MultiSelectList(projects, "Id", "Name", projectHelper.ListUserProjects(user.Id).Select(p => p.Id));
+                //user.CurrentRole = new SelectList(roles, "Name", "Name", roleHelper.ListUserRoles(user.Id).FirstOrDefault());
+                //user.CurrentProjects = new MultiSelectList(projects, "Id", "Name", projectHelper.ListUserProjects(user.Id).Select(p => p.Id));
             }
 
             return View(users);
         }
-        public ActionResult ManageUserRoles(string userId)
+        public ActionResult ManageUserRole(string userId)
         {
             //How do I load up a DropDownList with Role information??
             //new SelectList("The list of data pushed int the control",
@@ -55,7 +55,7 @@ namespace Debugger_Project.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageUserRoles(string userId, string roleName)
+        public ActionResult ManageUserRole(string userId, string roles)
         {
             //This is where I will be using the UserRolesHelper class
             //The first thing I want to do is make sure I remove user from all roles they may occupy.
@@ -65,9 +65,9 @@ namespace Debugger_Project.Controllers
             }
 
             //If the incoming role selection Is not null i want to assign the user to selected role
-            if(! string.IsNullOrEmpty(roleName))
+            if(! string.IsNullOrEmpty(roles))
             {
-                roleHelper.AddUserToRole(userId, roleName);
+                roleHelper.AddUserToRole(userId, roles);
             }
             return RedirectToAction("UserIndex");
        }
@@ -79,9 +79,24 @@ namespace Debugger_Project.Controllers
 
         public ActionResult ManageRoles()
         {
-            
-            return View();
+            ViewBag.Users = new MultiSelectList(db.Users, "Id", "FullName");
+            ViewBag.RoleName = new SelectList(db.Roles, "Name", "Name");
+
+            var users = db.Users.Select(u => new ManageRoleViewModel
+            {
+                Id = u.Id,
+                FullName = u.LastName + ", " + u.FirstName
+            }).ToList();
+
+            foreach(var user in users)
+            {
+                user.Role = roleHelper.ListUserRoles(user.Id).FirstOrDefault();
+            }
+
+            return View(users);
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -98,17 +113,16 @@ namespace Debugger_Project.Controllers
                     }
 
                     //Only to add user back to role
-                    if (roleName != null)
+                    if (!string.IsNullOrEmpty(roleName))
                     {
                         roleHelper.AddUserToRole(userId, roleName);
                     }
-
 
                 }
                 
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ManageRoles", "Admin");
             
            
 

@@ -11,7 +11,7 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <title>Color Admin | Login Page</title>
+    <title>Debugger Project | Login Page</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -53,8 +53,8 @@
             <!-- begin brand -->
             <div class="login-header">
                 <div class="brand">
-                    <span class="logo"></span> <b>Color</b> Admin
-                    <small>responsive bootstrap 4 admin template</small>
+                    <span class="logo"></span> <b>Login</b> 
+                    <small>Login Page for Debugger Project</small>
                 </div>
                 <div class="icon">
                     <i class="fa fa-lock"></i>
@@ -85,7 +85,10 @@
                         <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
                     </div>
                     <div class="m-t-20">
-                        Not a member yet? Click <a href="@Url.Action("Register","Account")">here</a> to register.
+                        <p>Not a member yet? Click <a href="@Url.Action("Register","Account")">here</a> to register.</p>
+                    </div>
+                    <div class="m-t-20">
+                        <a href="@Url.Action("DemoUser")">Demo User</a>
                     </div>
                 }
            

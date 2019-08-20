@@ -11,7 +11,7 @@ namespace Debugger_Project.Models
         public string CommentBody { get; set; }
         public DateTime Created { get; set; }
         public int TicketId { get; set; }
-        public int UserId { get; set; }
+        public string AuthorId { get; set; }
 
         public virtual Ticket Ticket { get; set; }
         public virtual ApplicationUser Author { get; set; }

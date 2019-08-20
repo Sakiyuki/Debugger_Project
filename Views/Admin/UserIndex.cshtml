@@ -34,6 +34,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.DisplayName)
             </th>
+            <th>
+                @Html.DisplayName("Role")
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -56,8 +60,11 @@
                     @Html.DisplayFor(modelItem => user.DisplayName)
                 </td>
                 <td>
-                    @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null)
-                    @Html.ActionLink("ManageProjects", "ManageProjects", "Admin", new { userId = user.Id }, null)
+                    @roleHelper.ListUserRoles(user.Id).FirstOrDefault()  
+                </td>
+                <td>
+                    @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null) |
+                    @Html.ActionLink("Manage Projects", "ManageProjects", "Admin", new { userId = user.Id }, null)
                 </td>
             </tr>
         }

@@ -7,9 +7,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Debugger_Project.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Debugger_Project.Controllers
 {
+    [RequireHttps]
+
     public class TicketNotificationsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -17,8 +20,26 @@ namespace Debugger_Project.Controllers
         // GET: TicketNotifications
         public ActionResult Index()
         {
-            var ticketNotifications = db.TicketNotifications.Include(t => t.Sender).Include(t => t.Ticket);
+            var ticketNotifications = db.TicketNotifications.Include(t => t.Recipient).Include(t => t.Sender).Include(t => t.Ticket);
             return View(ticketNotifications.ToList());
+        }
+
+        public ActionResult MyNotifications()
+        {
+            var userId = User.Identity.GetUserId();
+            return View("Index", db.TicketNotifications.Where(t => t.RecipientId == userId).ToList());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult MarkAsRead(int id)
+        {
+            var notification = db.TicketNotifications.Find(id);
+            notification.Read = true;
+            db.SaveChanges();
+
+            return RedirectToAction("Dashboard", "Home");
         }
 
         // GET: TicketNotifications/Details/5

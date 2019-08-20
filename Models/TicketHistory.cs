@@ -24,5 +24,6 @@ namespace Debugger_Project.Models
 
         //nav
         public virtual Ticket Ticket { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

@@ -65,6 +65,29 @@ namespace Debugger_Project.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<ActionResult> DemoLoginAsync(string demoEmail)
+        {
+            var email = WebConfigurationManager.AppSettings[demoEmail];
+            var password = WebConfigurationManager.AppSettings["DemoUserPassword"];
+
+            var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
+
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToAction("Dashboard","Home");
+                case SignInStatus.Failure:
+                default:
+                    return RedirectToAction("Login", "Home");
+            }
+
+        }
+
+
         //
         // POST: /Account/Login
         [HttpPost]
@@ -164,10 +187,10 @@ namespace Debugger_Project.Controllers
                     AvatarUrl = WebConfigurationManager.AppSettings["DefaultAvatar"]
                 };
 
-                if (ImageHelpers.IsWebFriendlyImage(model.Avatar))
+                if (ImageHelper.IsWebFriendlyImage(model.Avatar))
                 {
                     var fileName = Path.GetFileName(model.Avatar.FileName);
-                    model.Avatar.SavAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
+                    model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
                     user.AvatarUrl = "/Avatars/" + fileName;
                 }
 
@@ -187,7 +210,7 @@ namespace Debugger_Project.Controllers
                     };
 
                     var svc = new PersonalEmail();
-                    await svc.SendAsync(email);
+                    await svc.SendEmailAsync(email);
                     return RedirectToAction("Dashboard", "Home");
                 }
                 AddErrors(result);

@@ -9,7 +9,7 @@ using System.Web.Configuration;
 
 namespace Debugger_Project.Helpers
 {
-    public class ImageHelpers
+    public class ImageHelper
     {
         public static bool IsWebFriendlyImage(HttpPostedFileBase file)
         {

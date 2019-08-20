@@ -38,5 +38,10 @@ namespace Debugger_Project.Controllers
             return View();
         }
 
+        public ActionResult DemoUser()
+        {
+            return View();
+        }
+
     }
 }
