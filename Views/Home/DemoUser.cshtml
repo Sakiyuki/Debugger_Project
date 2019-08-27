@@ -1,17 +1,8 @@
-﻿@{
+﻿@*@{
     Layout = null;
-}
+}*@
 
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if !IE]><!-->
-
-<!--<![endif]-->
-@{
-    ViewBag.Title = "DemoUser";
-}
-
-<h2>Demo User<i class="icon-user"></i></h2>
 
 <div class="row">
     @using (Html.BeginForm("DemoLogin", "Account"))
@@ -20,63 +11,7 @@
         @Html.Hidden("Role", "DemoAdmin")
     }
 </div>
-@*<div class="col-md-3">
-        <section class="panel">
-            <header class="panel-heading bg-white">
-                <div class="panel-heading-icon bg-primary mt-sm">
-                    <i class="icon-user"></i>
-                </div>
-            </header>
-            <div class="panel-body">
-                <h4 class="text-semibold mt-none text-center">Admin</h4>
-                <p class="text-center">Demo Admin Preview</p>
-                <button type="submit" class="btn-btn-xs btn-primary">Login</button>
-            </div>
-        </section>
-    </div>
 
-    <div class="col-md-3">
-        <section class="panel">
-            <header class="panel-heading bg-white">
-                <div class="panel-heading-icon bg-primary mt-sm">
-                    <i class="icon-user"></i>
-                </div>
-            </header>
-            <div class="panel-body">
-                <h4 class="text-semibold mt-none text-center">ProjectManager</h4>
-                <p class="text-center">Demo Project Manager Preview</p>
-                <button type="submit" class="btn-btn-xs btn-primary">Login</button>
-            </div>
-        </section>
-    </div>
-    <div class="col-md-3">
-        <section class="panel">
-            <header class="panel-heading bg-white">
-                <div class="panel-heading-icon bg-primary mt-sm">
-                    <i class="icon-user"></i>
-                </div>
-            </header>
-            <div class="panel-body">
-                <h4 class="text-semibold mt-none text-center">Developer</h4>
-                <p class="text-center">Demo Developer Preview</p>
-                <button type="submit" class="btn-btn-xs btn-primary">Login</button>
-            </div>
-        </section>
-    </div>
-    <div class="col-md-3">
-        <section class="panel">
-            <header class="panel-heading bg-white">
-                <div class="panel-heading-icon bg-primary mt-sm">
-                    <i class="icon-user"></i>
-                </div>
-            </header>
-            <div class="panel-body">
-                <h4 class="text-semibold mt-none text-center">Submitter</h4>
-                <p class="text-center">Demo Submitter Preview</p>
-                <button type="submit" class="btn-btn-xs btn-primary">Login</button>
-            </div>
-        </section>
-    </div>*@
 
 <head>
     <meta charset="utf-8" />
@@ -103,58 +38,73 @@
     <script src="~/Scripts/pace.min.js"></script>
     <!-- ================== END BASE JS ================== -->
 </head>
+<body>
+    <h2>Demo User<i class="icon-user"></i></h2>
 
-<div class="col-md-12">
-    <div class="m-b-10 f-s-10 m-t-5"><b class="text-inverse">Demo Page</b></div>
-    <!-- begin card-group -->
-    <div class="card-group">
-        <!-- begin card -->
-        <div class="card">
-            <img class="card-img-top" src="~/Images/gallery-6.jpg" alt="Card image cap" />
-            <div class="card-block">
-                <h4 class="card-title">Demo Admin</h4>
-                <p class="card-text">This is the Demo login for the Admins.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                <a href="javascript:;" data-click="swal-success" class="btn btn-success">Admin</a>
-            </div>
+    <div class="row">
+        <div class="col-md-3">
+            @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("DemoEmail", "DemoAdminEmail")
+
+                <div class="m-b-10 f-s-10 m-t-5"><b class="text-inverse">Demo Page</b></div>
+                <!-- begin card-group -->
+                <div class="card-group">
+                    <!-- begin card -->
+                    <div class="card">
+                        <img class="card-img-top" src="~/Images/gallery-6.jpg" alt="Card image cap" />
+                        <div class="card-block">
+                            <h4 class="card-title">Demo Admin</h4>
+                            <p class="card-text">This is the Demo login for the Admins.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            <a href="javascript:;" data-click="swal-success" class="btn btn-success">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div> 
+        <div class="col-md-3">
+            @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("DemoEmail", "DemoProjectManagerEmail")
+                <img class="card-img-top" src="~/Images/gallery-7.jpg" alt="Card image cap" />
+                <div class="card-block">
+                    <h4 class="card-title">Demo Project Manager</h4>
+                    <p class="card-text">This is login for the Project Managers.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <a href="javascript:;" data-click="swal-success" class="btn btn-success">Proj Manager</a>
+                </div>
+             }
         </div>
-        <!-- end card -->
-        <!-- begin card -->
-        <div class="card">
-            <img class="card-img-top" src="~/Images/gallery-7.jpg" alt="Card image cap" />
-            <div class="card-block">
-                <h4 class="card-title">Demo Project Manager</h4>
-                <p class="card-text">This is login for the Project Managers.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                <a href="javascript:;" data-click="swal-success" class="btn btn-success">Proj Manager</a>
-            </div>
+        <div class="col-md-3">
+            @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("DemoEmail", "DemoDeveloperEmail")
+                <img class="card-img-top" src="~/Images/gallery-8.jpg" alt="Card image cap" />
+                <div class="card-block">
+                    <h4 class="card-title">Demo Developers</h4>
+                    <p class="card-text">This is the login page for the Developers.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <a href="javascript:;" data-click="swal-success" class="btn btn-success">Developers</a>
+                </div>
+            }
         </div>
-        <!-- end card -->
-        <!-- begin card -->
-        <div class="card">
-            <img class="card-img-top" src="~/Images/gallery-8.jpg" alt="Card image cap" />
-            <div class="card-block">
-                <h4 class="card-title">Demo Developers</h4>
-                <p class="card-text">This is the login page for the Developers.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                <a href="javascript:;" data-click="swal-success" class="btn btn-success">Developers</a>
+        @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("DemoEmail", "DemoSubmitterEmail")
+            <div class="col-md-3">
+                <img class="card-img-top" src="~/Images/gallery-9.jpg" alt="Card image cap" />
+                <div class="card-block">
+                    <h4 class="card-title">Submitters</h4>
+                    <p class="card-text">This is the login page for the Submitters.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <a href="javascript:;" data-click="swal-success" class="btn btn-success">Submitter</a>
+                </div>
             </div>
-        </div>
-        <!-- end card -->
-        <!-- begin card -->
-        <div class="card">
-            <img class="card-img-top" src="~/Images/gallery-9.jpg" alt="Card image cap" />
-            <div class="card-block">
-                <h4 class="card-title">Submitters</h4>
-                <p class="card-text">This is the login page for the Submitters.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                <a href="javascript:;" data-click="swal-success" class="btn btn-success">Submitter</a>
-            </div>
-        </div>
-        <!-- end card -->
+          }
     </div>
-    <!-- end card-group -->
-</div>
-
-
-
+</body>

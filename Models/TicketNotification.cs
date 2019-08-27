@@ -24,9 +24,6 @@ namespace Debugger_Project.Models
         public string Subject { get; set; }
 
         
-
-
-
         //nav
         public virtual Ticket Ticket { get; set; }
 

@@ -11,6 +11,9 @@ namespace Debugger_Project.Models
 
         public int TicketId { get; set; }
 
+        public string UserId { get; set; }
+
+
         public string PropertyName { get; set; }
 
         public string OldValue { get; set; }
@@ -19,7 +22,7 @@ namespace Debugger_Project.Models
 
         public DateTime UpDated {get; set;}
 
-        public string UserId { get; set; }
+        
 
 
         //nav

@@ -5,7 +5,7 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <title>Color Admin | Blank Page</title>
+    <title>Bug Tracker | NSA</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -34,7 +34,7 @@
         <div id="header" class="header navbar-default">
             <!-- begin navbar-header -->
             <div class="navbar-header">
-                <a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Color</b> Admin</a>
+                <a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Bug Tracker</b><br />Developer</a>
                 <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -126,8 +126,8 @@
                 </li>
                 <li class="dropdown navbar-user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="~/Images/user-13.jpg" alt="" />
-                        <span class="d-none d-md-inline">Adam Schwartz</span> <b class="caret"></b>
+                        <img src="~/Images/Lead Developer.jpg" alt="" />
+                        <span class="d-none d-md-inline">Jason Twichell</span> <b class="caret"></b>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="javascript:;" class="dropdown-item">Edit Profile</a>
@@ -135,7 +135,7 @@
                         <a href="javascript:;" class="dropdown-item">Calendar</a>
                         <a href="javascript:;" class="dropdown-item">Setting</a>
                         <div class="dropdown-divider"></div>
-                        @Html.ActionLink("Log out", "CustomLogoff", "Account", null, new { @class = "dropdown-item"})                       
+                        @Html.ActionLink("Log out", "CustomLogoff", "Account", null, new { @class = "dropdown-item" })
                     </div>
                 </li>
             </ul>
@@ -152,12 +152,12 @@
                         <a href="javascript:;" data-toggle="nav-profile">
                             <div class="cover with-shadow"></div>
                             <div class="image">
-                                <img src="~/Images/user-13.jpg" alt="" />
+                                <img src="~/Images/Lead Developer.jpg" alt="" />
                             </div>
                             <div class="info">
                                 <b class="caret pull-right"></b>
-                                Sean Ngu
-                                <small>Front end developer</small>
+                                Jason Twichell
+                                <small>Lead Developer</small>
                             </div>
                         </a>
                     </li>
@@ -176,62 +176,62 @@
 
                     @if (User.IsInRole("Admin"))
                     {
-                    <li class="has-sub">
-                        <a href="javascript:;">
-                            <b class="caret"></b>
-                            <i class="fa fa-th-large"></i>
-                            <span>User Management</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>@Html.ActionLink("User Index", "UserIndex", "Admin")</li>
-                            <li>@Html.ActionLink("Manage Roles", "ManageRoles", "Admin")</li>
-                        </ul>
-                    </li>
+                        <li class="has-sub">
+                            <a href="javascript:;">
+                                <b class="caret"></b>
+                                <i class="fa fa-th-large"></i>
+                                <span>User Management</span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li>@Html.ActionLink("User Index", "UserIndex", "Admin")</li>
+                                <li>@Html.ActionLink("Manage Roles", "ManageRoles", "Admin")</li>
+                            </ul>
+                        </li>
                     }
 
                     @*<li class="has-sub">
-                        <a href="javascript:;">
-                            <span class="badge pull-right">10</span>
-                            <i class="fa fa-hdd"></i>
-                            <span>Email</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a href="email_inbox.html">Inbox</a></li>
-                            <li><a href="email_compose.html">Compose</a></li>
-                            <li><a href="email_detail.html">Detail</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="widget.html">
-                            <i class="fab fa-simplybuilt"></i>
-                            <span>Widgets <span class="label label-theme m-l-5">NEW</span></span>
-                        </a>
-                    </li>
-                    <li class="has-sub">
-                        <a href="javascript:;">
-                            <b class="caret"></b>
-                            <i class="fa fa-gem"></i>
-                            <span>UI Elements <span class="label label-theme m-l-5">NEW</span></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a href="ui_general.html">General <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
-                            <li><a href="ui_typography.html">Typography</a></li>
-                            <li><a href="ui_tabs_accordions.html">Tabs & Accordions</a></li>
-                            <li><a href="ui_unlimited_tabs.html">Unlimited Nav Tabs</a></li>
-                            <li><a href="ui_modal_notification.html">Modal & Notification <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
-                            <li><a href="ui_widget_boxes.html">Widget Boxes</a></li>
-                            <li><a href="ui_media_object.html">Media Object</a></li>
-                            <li><a href="ui_buttons.html">Buttons  <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
-                            <li><a href="ui_icons.html">Icons</a></li>
-                            <li><a href="ui_simple_line_icons.html">Simple Line Icons</a></li>
-                            <li><a href="ui_ionicons.html">Ionicons</a></li>
-                            <li><a href="ui_tree.html">Tree View</a></li>
-                            <li><a href="ui_language_bar_icon.html">Language Bar & Icon</a></li>
-                            <li><a href="ui_social_buttons.html">Social Buttons</a></li>
-                            <li><a href="ui_tour.html">Intro JS</a></li>
-                        </ul>
-                    </li>*@                       
-                    
+                            <a href="javascript:;">
+                                <span class="badge pull-right">10</span>
+                                <i class="fa fa-hdd"></i>
+                                <span>Email</span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li><a href="email_inbox.html">Inbox</a></li>
+                                <li><a href="email_compose.html">Compose</a></li>
+                                <li><a href="email_detail.html">Detail</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="widget.html">
+                                <i class="fab fa-simplybuilt"></i>
+                                <span>Widgets <span class="label label-theme m-l-5">NEW</span></span>
+                            </a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="javascript:;">
+                                <b class="caret"></b>
+                                <i class="fa fa-gem"></i>
+                                <span>UI Elements <span class="label label-theme m-l-5">NEW</span></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li><a href="ui_general.html">General <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
+                                <li><a href="ui_typography.html">Typography</a></li>
+                                <li><a href="ui_tabs_accordions.html">Tabs & Accordions</a></li>
+                                <li><a href="ui_unlimited_tabs.html">Unlimited Nav Tabs</a></li>
+                                <li><a href="ui_modal_notification.html">Modal & Notification <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
+                                <li><a href="ui_widget_boxes.html">Widget Boxes</a></li>
+                                <li><a href="ui_media_object.html">Media Object</a></li>
+                                <li><a href="ui_buttons.html">Buttons  <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
+                                <li><a href="ui_icons.html">Icons</a></li>
+                                <li><a href="ui_simple_line_icons.html">Simple Line Icons</a></li>
+                                <li><a href="ui_ionicons.html">Ionicons</a></li>
+                                <li><a href="ui_tree.html">Tree View</a></li>
+                                <li><a href="ui_language_bar_icon.html">Language Bar & Icon</a></li>
+                                <li><a href="ui_social_buttons.html">Social Buttons</a></li>
+                                <li><a href="ui_tour.html">Intro JS</a></li>
+                            </ul>
+                        </li>*@
+
                     <!-- begin sidebar minify button -->
                     <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
                     <!-- end sidebar minify button -->
@@ -242,16 +242,11 @@
         </div>
         <div class="sidebar-bg"></div>
         <!-- end #sidebar -->
-
-
         <!-- begin #content -->
         <div id="content" class="content">
-          @RenderBody()
+            @RenderBody()
         </div>
         <!-- end #content -->
-
-
-
         <!-- begin theme-panel -->
         <div class="theme-panel theme-panel-lg">
             <a href="javascript:;" data-click="theme-panel-expand" class="theme-collapse-btn"><i class="fa fa-cog"></i></a>
@@ -339,23 +334,23 @@
                 <h5>THEME VERSION</h5>
                 <div class="theme-version">
                     <a href="../template_html/index_v2.html" class="active">
-                        <span style="background-image: url(../assets/img/theme/default.jpg);"></span>
+                        <span style="background-image: url(/Images/default.jpg);"></span>
                     </a>
                     <a href="../template_transparent/index_v2.html">
-                        <span style="background-image: url(../assets/img/theme/transparent.jpg);"></span>
+                        <span style="background-image: url(/Images/transparent.jpg);"></span>
                     </a>
                 </div>
                 <div class="theme-version">
                     <a href="../template_apple/index_v2.html">
-                        <span style="background-image: url(../assets/img/theme/apple.jpg);"></span>
+                        <span style="background-image: url(/Images/apple.jpg);"></span>
                     </a>
                     <a href="../template_material/index_v2.html">
-                        <span style="background-image: url(../assets/img/theme/material.jpg);"></span>
+                        <span style="background-image: url(/Images/material.jpg);"></span>
                     </a>
                 </div>
                 <div class="theme-version">
                     <a href="../template_facebook/index_v2.html">
-                        <span style="background-image: url(../assets/img/theme/facebook.jpg);"></span>
+                        <span style="background-image: url(/Images/facebook.jpg);"></span>
                     </a>
                 </div>
                 <div class="divider"></div>
@@ -387,11 +382,13 @@
     <script src="~/SharedResources/Scripts/js.cookie.js"></script>
     <script src="~/SharedResources/Scripts/default.min.js"></script>
     <script src="~/SharedResources/Scripts/apps.min.js"></script>
+    @*<script src="~/SharedResources/Scripts/jquery-3.3.1.min.js"></script>*@
     <!-- ================== END BASE JS ================== -->
 
-    <script>$(document).ready(function() {
-			App.init();
-		});</script>
+    <script>
+    $(document).ready(function () {
+            App.init();
+        });</script>
 
     @RenderSection("scripts", required: false)
 </body>

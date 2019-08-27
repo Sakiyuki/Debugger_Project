@@ -28,6 +28,16 @@ namespace Debugger_Project.Models
                 return $"{LastName}, {FirstName}";
             }
         }
+
+        [NotMapped]
+        public string FullNameWithEmail
+        {
+            get
+            {
+                return $"{ LastName}, { FirstName} -{Email}";
+             
+            }
+        }
         
         
         //nav

@@ -21,7 +21,7 @@ namespace Debugger_Project.Controllers
         {
             var roles = db.Roles.ToList();
             var projects = db.Projects;
-            var users = db.Users.Select(u => new MemberViewModel //This line goes into the db, search for the Users table,
+            var users = db.Users.Select(u => new UserProfileViewModel //This line goes into the db, search for the Users table,
             //Selects the properties in the database listed below from the UserProfile View Model and converts it to a list.
             {
                 Id = u.Id,

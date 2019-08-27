@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Debugger_Project.ViewModels
 {
-    public class MemberViewModel
+    public class UserProfileViewModel
     {
         public string Id { get; set; }
 
@@ -25,6 +25,8 @@ namespace Debugger_Project.ViewModels
         [MaxLength(20, ErrorMessage = "Display Name cannot be greater than 20 characters")]
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
+
+        public string PhoneNumber { get; set; }
 
 
         [Display(Name = "Avatar path")]

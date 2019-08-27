@@ -2,7 +2,6 @@
 using Debugger_Project.Models;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
@@ -23,6 +22,7 @@ namespace Debugger_Project.Helpers
                 CurrentUser = db.Users.Find(userId);
 
             var stringRole = RoleHelper.ListUserRoles(userId).FirstOrDefault();
+
             if (!string.IsNullOrEmpty(stringRole))
                 CurrentRole = (SystemRole)Enum.Parse(typeof(SystemRole), stringRole);
             

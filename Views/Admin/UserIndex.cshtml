@@ -1,74 +1,68 @@
 ﻿@using Debugger_Project.ViewModels
 @using Debugger_Project.Helpers
 
-@model IEnumerable<MemberViewModel>
+@model IEnumerable<UserIndexViewModel>
 
-<style>
-    .avatar{
-        max-height: 30px;
-        max-width:30px;
-    }
-</style>
 
-@{ 
-    var roleHelper = new UserRolesHelper();
-}
+<h2>User Index</h2>
 
-<h2>UserIndex</h2>
+<table class="table tblTarget">
 
-<table id="mytable" class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("Avatar")
+                @Html.DisplayNameFor(model => model.AvatarUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayName("Current Role")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayName("Current Project(s)")
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DisplayName)
-            </th>
-            <th>
-                @Html.DisplayName("Role")
-            </th>
-            <th></th>
+
+            @*<th></th>*@
         </tr>
     </thead>
+
     <tbody>
         @foreach (var user in Model)
         {
             <tr>
-                <td class="avatar">
+                <td>
                     <img src="@user.AvatarUrl" height="20" width="20" />
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => user.Email)
+                    @Html.DisplayFor(model => user.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => user.FirstName)
+                    @Html.DisplayFor(model => user.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => user.LastName)
+                    @Html.DropDownList("CurrentRole", user.CurrentRole, "NONE")
                 </td>
+
                 <td>
-                    @Html.DisplayFor(modelItem => user.DisplayName)
+                    @Html.ListBox("CurrentProjects", user.CurrentProjects)
                 </td>
+
                 <td>
-                    @roleHelper.ListUserRoles(user.Id).FirstOrDefault()  
-                </td>
-                <td>
-                    @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null) |
-                    @Html.ActionLink("Manage Projects", "ManageProjects", "Admin", new { userId = user.Id }, null)
+                        @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null) |
+                        @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
                 </td>
             </tr>
         }
     </tbody>
+
 </table>
 
-@Html.ActionLink("Back To DashBoard", "Dashboard", "Home")
+
+
+
+@Html.ActionLink("Back To Dashboard", "Dashboard", "Home")
+

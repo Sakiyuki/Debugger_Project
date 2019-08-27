@@ -5,7 +5,8 @@ using System.Web;
 
 namespace Debugger_Project.Helpers
 {
-    public class SeedHelper
+    public class SeedHelper : CommonHelper
     {
+
     }
 }

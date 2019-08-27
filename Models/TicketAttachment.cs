@@ -21,13 +21,9 @@ namespace Debugger_Project.Models
 
         public string AttachmentUrl { get; set; }
 
-
-
-
-
         //virtula nav
         public virtual Ticket Ticket { get; set; }
 
-        public virtual ApplicationUser User{ get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

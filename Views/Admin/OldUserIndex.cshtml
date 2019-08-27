@@ -1,0 +1,69 @@
+﻿@using Debugger_Project.ViewModels
+@using Debugger_Project.Helpers
+
+@model IEnumerable<UserIndexViewModel>
+@{
+    ViewBag.Title = "OldUserIndex";
+}
+
+<h2>OldUserIndex</h2>
+
+<style>
+    .avatar {
+        max-height: 30px;
+        max-width: 30px;
+    }
+</style>
+
+@{
+    var roleHelper = new UserRolesHelper();
+}
+
+<h2>User Index</h2>
+
+<table class="table tblTarget">
+
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayName("Full Name")
+            </th>
+            <th>
+                @Html.DisplayName("Role")
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    @user.AvatarUrl, @user.FullName
+                </td>
+                <td>
+                    @roleHelper.ListUserRoles(user.Id).FirstOrDefault()
+                </td>
+                <td>
+                    @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null) |
+                    @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+
+
+@Html.ActionLink("Back To Dashboard", "Dashboard", "Home")

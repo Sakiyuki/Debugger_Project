@@ -32,6 +32,7 @@ namespace Debugger_Project.Models
         [Required]
         [Display(Name = "Code")]
         public string Code { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [Display(Name = "Remember this browser?")]
@@ -65,22 +66,29 @@ namespace Debugger_Project.Models
 
     public class RegisterViewModel
     {
-        [Required]
+        [MaxLength(50, ErrorMessage = "First Name cannot be greater than 50 characters")]
+        [MinLength(1, ErrorMessage = "First Name is required")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [Required]
+        [MaxLength(50, ErrorMessage = "Last Name cannot be greater than 50 characters")]
+        [MinLength(1, ErrorMessage = "Last Name is required")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
+        [MaxLength(20, ErrorMessage = "Display Name cannot be greater than 20 characters")]
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
+
+        [Display(Name = "Avatar path")]
+        public string AvatarUrl { get; set; }
 
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        public HttpPostedFileBase Avatar { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -92,9 +100,8 @@ namespace Debugger_Project.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        public HttpPostedFileBase Avatar { get; set; }
     }
+
 
     public class ResetPasswordViewModel
     {

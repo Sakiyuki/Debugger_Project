@@ -32,13 +32,30 @@ namespace Debugger_Project.Controllers
             return View();
         }
 
-        //[Authorize]
+        [Authorize]
         public ActionResult Dashboard()
         {
             return View();
         }
 
         public ActionResult DemoUser()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult AdminDashBoard()
+        {
+            return View();
+        }
+
+        public ActionResult DemoAdmin()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult ProjectManagerDashBoard()
         {
             return View();
         }

@@ -18,15 +18,24 @@ namespace Debugger_Project.Controllers
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private UserRolesHelper roleHelper = new UserRolesHelper();
+        private UserRolesHelper rolesHelper = new UserRolesHelper();
         private ProjectsHelper projectHelper = new ProjectsHelper();
+        private TicketHelper ticketHelper = new TicketHelper();
 
+
+        // GET: Tickets
         [Authorize]
+        public ActionResult Index()
+        {
+            var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            return View(tickets.ToList());
+        }
+
         public ActionResult Dashboard(int id)
         {
             var ticket = db.Tickets.Find(id);
 
-            if(ticket == null)
+            if (ticket == null)
             {
                 return HttpNotFound();
             }
@@ -34,44 +43,21 @@ namespace Debugger_Project.Controllers
             return View(ticket);
         }
 
-        [Authorize]
-        // GET: Tickets
-        public ActionResult Index()
-        {
-            var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(tickets.ToList());
-        }
 
-        [Authorize(Roles = "ProjectManager, Developer, Submitter")]
+        // Get My Tickets
+        [Authorize(Roles = "Project Manager, Developer, Submitter")]
         public ActionResult MyIndex()
         {
-            //First get the Id of the logged in User
             var userId = User.Identity.GetUserId();
-
-            //Then get the role they occypy
-            var myRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
-
-            var myTickets = new List<Ticket>();
-            //Then based on the Role name we will push different data into the view.
-            switch (myRole)
-            {
-              
-                case "Developer":
-                    myTickets = db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
-                    break;
-                case "Submitter":
-                    break;
-                case "ProjectManager":
-                    //myTickets are going to be all the Tickets on all he Projecs I am on.
-                    myTickets = db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).ToList();
-                    break;                  
-            }
+            var myRole = rolesHelper.ListUserRoles(userId).FirstOrDefault();
+            var myTickets = db.Tickets.ToList();
 
             return View("Index", myTickets);
-
         }
 
+
         // GET: Tickets/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -79,22 +65,28 @@ namespace Debugger_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Ticket ticket = db.Tickets.Find(id);
+            var allDevelopers = rolesHelper.UsersInRole("Developer");
+            ViewBag.Developer = new SelectList(allDevelopers, "Id", "FullName", ticket.AssignedToUserId);
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+            ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+
             if (ticket == null)
             {
                 return HttpNotFound();
             }
             return View(ticket);
+
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles ="Submitter")]
-
-        public ActionResult Create()
+        [Authorize(Roles = "Submitter")]
+        public ActionResult Create(int projectId)
         {
             var userId = User.Identity.GetUserId();
-            var myProjects = projectHelper.ListUserProjects(userId);//This is how we get the userId    
-            
-            ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
+            var myProjects = projectHelper.ListUserProjects(userId);
+
+            ViewBag.ProjectId = projectId;
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             return View();
@@ -105,20 +97,18 @@ namespace Debugger_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Submitter")]
         public ActionResult Create([Bind(Include = "ProjectId,TicketTypeId,TicketPriorityId,Title,Description")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
-                //Since the user is not able to set the initial Ticket Status we hav to do it behind the scenes almost
-                //like we set the Created date on a new BlogPost...
-                //How is this done?
-                ticket.Created = DateTime.Now;
+                ticket.AssignedToUserId = null;
+                ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "New / Unassigned").Id;
                 ticket.OwnerUserId = User.Identity.GetUserId();
-                ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "New/UnAssigned").Id;
-
+                ticket.Created = DateTime.Now;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Tickets", new { id = ticket.Id });
             }
 
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
@@ -126,137 +116,16 @@ namespace Debugger_Project.Controllers
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
             return View(ticket);
         }
+
+        //public ActionResult CreateTicketPartial(int projectId)
+        //{
+        //    var 
+        //    return PartialView("CreateTicketPartial", ticket.ProjectId = projectId);
+        //}
 
         // GET: Tickets/Edit/5
-        [Authorize(Roles ="Admin, ProjectManager, Submitter, Developer")]
-        public ActionResult Edit(int? id)// If the int Id is not null do we do anything otherwise return httpStatusCode
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-           
-            Ticket ticket = db.Tickets.Find(id);//Here we try to find the ticket Id.
-            if (ticket == null)
-            {
-                return HttpNotFound();//If Ticket Id is not found, we return 404
-            }
-
-            var allowed = false;//This line of code determines whether or not the user is allowed to enter.
-            var userId = User.Identity.GetUserId();//Here we determine what the users UserId is?
-            
-            //Based on my Role.. Can user edit this Ticket
-            if (User.IsInRole("Developer") && ticket.AssignedToUserId == userId)//Here we check if you are a developer and you have been assigned to a ticket if so you can edit it.
-                allowed = true;
-            else if (User.IsInRole("Submitter") && ticket.OwnerUserId == userId)//Here we check if you are a Submitter and the ticket that you are submitting belongs to you if so, you can edit it
-                allowed = true;
-            else if (User.IsInRole("ProjectManager"))// If you are a project manager you are allowed to edit
-            {
-                //if(db.Users.Find(userId).Projects.SelectMany(p => p.Tickets).Select(t => { new {id = t.Id}.Contains(ticket.Id))
-                //If this ticket is on a Project that I am on then I can edit this Ticket...
-            }
-            else
-            {
-                allowed = true; //The only person left is Admin and if all other conditions fail, then this one is true.
-            }
-
-            if (TicketDecisionHelper.TicketIsEditableByUser(ticket))//If the value of allowed is true then the below code can be executed.
-            { 
-                ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-                ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-                ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-                ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-                ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
-                return View(ticket);
-            }
-            else  //Otherwise user gets returned here.
-            {
-                TempData["ErrorMessage"] = "Based on your role you are not allowed to edit this Ticket...";
-                return RedirectToAction("AccessViolation", "Admin");//This returns you to the AccessViolation action in the Admin controller.
-            }
-
-        }
-
-        // POST: Tickets/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-
-        public ActionResult Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,OwnerUserId,AssignedToUserId,Title,Description,Created,Updated")] Ticket ticket)
-        {
-            if (ModelState.IsValid)
-            {
-                //Go out to the DB and get a copy of the Ticket before it is changed
-                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id); //Not tracking is used so the database doesn't think I'm trying to make changes to the ticket.
-
-                db.Entry(ticket).State = EntityState.Modified;
-                db.SaveChanges();
-
-                //Now call the NotificationHelper to determine if a Notification needs to be created
-                NotificationHelper.CreateAssignmentNotification(oldTicket, ticket);
-
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
-
-            return View(ticket);
-        }
-
-        public ActionResult AssignTicket(int? id)
-        {
-            UserRolesHelper helper = new UserRolesHelper();
-            var ticket = db.Tickets.Find(id);
-            var users = helper.UsersInRole("Developer").ToList();
-            ViewBag.AssignedToUserId = new SelectList(users, "Id", "FullName",
-                                                      ticket.AssignedToUserId);
-            return View(ticket);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AssignTicket(Ticket model)
-        {
-            var ticket = db.Tickets.Find(model.Id);
-            ticket.AssignedToUserId = model.AssignedToUserId;
-
-            db.SaveChanges();
-
-            var callbackUrl = Url.Action("Details", "Tickets", new { id = ticket.Id },
-                                            protocol: Request.Url.Scheme);
-            try
-            {
-                var recipientEmail = db.Users.Find(model.AssignedToUserId).Email;
-
-                var senderId = User.Identity.GetUserId();
-                var senderName = db.Users.Find(senderId).FirstName;
-                var fromEmail = WebConfigurationManager.AppSettings["emailfrom"];
-                var email = new MailMessage($"{senderName}<{fromEmail}>", recipientEmail)
-                {
-                    Subject = "You have been assigned to Ticket Id: " + ticket.Id,
-                    Body = "You have been assigned a new Ticket." + Environment.NewLine +
-                           "Please click the following ling to view the details " +
-                           "<a href=\"" + callbackUrl + "\">NEW TICKET</a>",
-                    IsBodyHtml = true
-                };
-
-                var svc = new PersonalEmail();
-                await svc.SendEmailAsync(email);
-            }
-            catch (Exception ex)
-            {
-                await Task.FromResult(0);
-            }
-            return RedirectToAction("Index");
-        }
-
-        // GET: Tickets/Delete/5
-        public ActionResult Delete(int? id)
+        [Authorize(Roles = "Admin, Project Manager, Submitter, Developer")]
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -269,13 +138,79 @@ namespace Debugger_Project.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (DecisionHelper.TicketEditable(ticket))
+            {
+                ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
+                //TODO project id should be limited to admin in case a ticket goes to the wrong project
+                ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
+                ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+                ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+                ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+                return View(ticket);
+            }
+            else
+            {
+                return RedirectToAction("AccessViolation", "Admin");
+            }
+        }
+
+        // POST: Tickets/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Description,TicketTypeId,TicketPriorityId,TicketStatusId,AssignedToUserId")] Ticket ticket, string developer)
+        {
+            var allDevelopers = rolesHelper.UsersInRole("Developer");
+
+            if (ModelState.IsValid)
+            {
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+                var newTicket = db.Tickets.Find(ticket.Id);
+                newTicket.AssignedToUserId = developer;
+                newTicket.TicketTypeId = ticket.TicketTypeId;
+                newTicket.TicketPriorityId = ticket.TicketPriorityId;
+                newTicket.TicketStatusId = ticket.TicketStatusId;
+                newTicket.Description = ticket.Description;
+                newTicket.Updated = DateTime.Now;
+                db.SaveChanges();
+                projectHelper.AddUserToProject(newTicket.AssignedToUserId, newTicket.ProjectId);
+                ticketHelper.CreateChangeNotification(oldTicket, newTicket);
+                ticketHelper.CreateHistoryRecord(oldTicket, newTicket);
+                await ticketHelper.CreateAssignmentNotification(oldTicket, newTicket);
+                return RedirectToAction("Details", "Tickets", new { Id = ticket.Id });
+            }
+            ViewBag.Developers = new SelectList(allDevelopers, "Id", "FullName", ticket.AssignedToUserId);
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+            ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+            return View(ticket);
+        }
+
+        public ActionResult TicketsPartial()
+        {
+            return PartialView();
+        }
+
+        // GET: Tickets/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
             return View(ticket);
         }
 
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-
         public ActionResult DeleteConfirmed(int id)
         {
             Ticket ticket = db.Tickets.Find(id);
@@ -292,5 +227,28 @@ namespace Debugger_Project.Controllers
             }
             base.Dispose(disposing);
         }
-    }
+
+        // POST: TicketComments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult CreateComment([Bind(Include = "Id,TicketId,AuthorId,CommentBody,Created")] TicketComment ticketComment, string commentBody, int ticketId)
+        {
+            if (ModelState.IsValid)
+            {
+                ticketComment.AuthorId = User.Identity.GetUserId();
+                ticketComment.CommentBody = commentBody;
+                ticketComment.Created = DateTime.Now;
+                db.TicketComments.Add(ticketComment);
+                db.SaveChanges();
+                return RedirectToAction("Details", "Tickets", new { id = ticketId });
+            }
+
+            ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketComment.TicketId);
+            return View(ticketComment);
+        }
+    }   
 }

@@ -1,99 +1,138 @@
-﻿@model Debugger_Project.Models.Ticket
+﻿@using Debugger_Project.Helpers;
+@using Microsoft.AspNet.Identity;
+
+@model Debugger_Project.Models.Ticket
 
 @{
-    ViewBag.Title = "Details";
+    var userId = User.Identity.GetUserId();
+    var imageHelper = new ImageHelper();
+    var ticketHelper = new TicketHelper();
+    var userProjectsHelper = new UserProjectsHelper();
+    var projectHelper = new ProjectsHelper();
+    var roleHelper = new UserRolesHelper();
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AssignedToUser.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AssignedToUser.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OwnerUser.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OwnerUser.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Project.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketPriority.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketPriority.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketStatus.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketStatus.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketType.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketType.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-
-    </dl>
+<div class="box-header">
+    <i class="fa fa-ticket"></i>
+    <h3 class="box-title">
+        <strong>@Model.Title Dashboard</strong>
+    </h3>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index") |
-    @Html.ActionLink("Assign", "AssignTicket", new { id =Model.Id })
-</p>
+<div class="body">
+    <section class="content render-box skroll">
+        <div class="row">
+            <div id="tix" class="col-md-12">
+                @Html.Partial("TicketsPartial")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 connectedSortable">
+                @Html.Partial("HistoryPartial")
+            </div>
+            <div class="col-md-6 connectedSortable">
+                <div class="box box-solid collapsed-box">
+                    <div class="box-header">
+                        <i class="fa fa-info-circle"></i>
+                        <h3 class="box-title">
+                            <strong>@Model.Project.Name Info</strong>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-sm" data-widget="collapse">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Other Tickets</th>
+                                    <th>Additional Information</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@Model.Project.Description</td>
+                                    <td class="tickets">
+                                        @foreach (var ticks in ticketHelper.TicketsOnProject(Model.Project.Id).OrderBy(t => t.TicketPriorityId))
+                                        {
+                                            if (ticks.Id != Model.Id)
+                                            {
+                                                if (User.IsInRole("Admin") || User.IsInRole("Project Manager") && projectHelper.IsUserOnProject(userId, ticks.ProjectId) || userId == ticketHelper.TicketAssignee(ticks.Id) || userId == ticks.OwnerUserId)
+                                                {
+                                                    <i class="fa fa-circle @ticketHelper.TicketsByPriority(ticks.TicketPriority.Name)"></i>
+                                                    <a href="@Url.Action("Details", "Tickets", new { Id = ticks.Id })" class="btn btn-xs btn-default">
+                                                        @ticks.Title
+                                                    </a><br />
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-circle @ticketHelper.TicketsByPriority(ticks.TicketPriority.Name)"></i> @ticks.Title<br />
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Details", "Projects", new { Id = Model.Project.Id })" class="btn">Project Details</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="box box-solid collapsed-box">
+                    <div class="box-header">
+                        <i class="fa fa-group"></i>
+                        <h3 class="box-title">
+                            <strong>Team Info</strong>
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-sm" data-widget="collapse">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Project Members</th>
+                                    <th>Ticket Count</th>
+                                    <th>Contact</th>
+                                    <th>Roles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var users in userProjectsHelper.ListUsersOnProject(Model.Project.Id))
+                                {
+                                    <tr>
+                                        <td class="mems">
+                                            <img src="@users.AvatarUrl" class="img-circle" style="height:20px" /> @users.FullName
+                                            @if (users.Id == Model.AssignedToUserId)
+                                            {
+                                                @: - Assigned User
+                                            }
+                                            <br />
+                                        </td>
+                                        <td>@ticketHelper.MyTickets(users.Id, roleHelper.ListUserRoles(users.Id).FirstOrDefault()).Count()</td>
+                                        <td>@users.Email</td>
+                                        <td>@roleHelper.ListUserRoles(users.Id).FirstOrDefault()</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @Html.Partial("AttachmentsPartial")
+                @Html.Partial("CommentsPartial")
+            </div>
+        </div>
+    </section>
+</div>

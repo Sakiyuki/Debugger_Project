@@ -3,9 +3,9 @@
     ViewBag.Title = "ManageUserRole";
 }
 
-<h2>ManageUserRole</h2>
+<h2>Manage User Role</h2>
 
-<h2>This is Where I will be ridirected when I want ot Manage an Individual user.</h2>
+<h2>THIS IS WHERE I WILL BE REDIRECTED WHEN I WANT TO MANAGE AN INDIVIDUAL USERS ROLE</h2>
 
 @using (Html.BeginForm())
 {
@@ -15,15 +15,16 @@
     <div class="form-group">
         @Html.Label("Assign Role", null, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownList("Roles", null, "--Select Role--", htmlAttributes: new { @class = "from-control" })
+            @Html.DropDownList("UserRole", null, "-- Select Role --", htmlAttributes: new { @class = "form-control" })
         </div>
     </div>
+
     <div class="form-group">
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Assign" class="btn btn-default" />
         </div>
     </div>
 
 }
-@Html.ActionLink("Back To User Index", "UserIndex", "Admin")
 
+@Html.ActionLink("Back To User Index", "UserIndex", "Admin")

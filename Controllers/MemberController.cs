@@ -23,7 +23,7 @@ namespace Debugger_Project.Controllers
 
             //I want to go out to the database and get a portion of the user record for this person
             // in order to create an instance of MemberViewModel
-            var member = db.Users.Select(user => new MemberViewModel
+            var member = db.Users.Select(user => new UserProfileViewModel
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
@@ -39,7 +39,7 @@ namespace Debugger_Project.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProfile(MemberViewModel member)
+        public ActionResult EditProfile(UserProfileViewModel member)
         {
             //Step 1: Use the incoming member Id to get the actual Application User record from the DB
             var user = db.Users.Find(member.Id);
