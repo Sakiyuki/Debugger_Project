@@ -9,7 +9,8 @@ using System.Web.Mvc;
 
 namespace Debugger_Project.Controllers
 {
-    [Authorize(Roles = "Admin, ProjectManager")]
+    [RequireHttps]
+    //[Authorize(Roles = "Admin, ProjectManager")]
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

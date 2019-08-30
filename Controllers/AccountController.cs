@@ -16,6 +16,7 @@ using System.IO;
 
 namespace Debugger_Project.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class AccountController : Controller
     {

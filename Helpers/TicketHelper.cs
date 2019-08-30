@@ -170,7 +170,9 @@ namespace Debugger_Project.Helpers
                     return db.TicketTypes.Find(Convert.ToInt32(value)).Name;
                 case "AssignedToUserId":
                 case "OwnerUserId":
-                    return db.Users.Find(value).DisplayName;
+                    if(!string.IsNullOrEmpty(value))
+                      return db.Users.Find(value).DisplayName;
+                    return " -- UnAssigned --";
                 default:
                     return value;
             }
